@@ -48,12 +48,12 @@ public class Submission {
     public String toString() {
 
         return String.format(
-                "%s, viikko %d tehtyjä tehtäviä yhteensä %d, aikaa kului %.1f tuntia, tehdyt tehtävät: %s",
-                course,
-                week,
-                exercises.size(),
-                hours,
-                formatExercises()
+            "%s, viikko %d tehtyjä tehtäviä yhteensä %d, aikaa kului %.1f tuntia, tehdyt tehtävät: %s",
+            course,
+            week,
+            exercises.size(),
+            hours,
+            formatExercises()
         );
     }
 
