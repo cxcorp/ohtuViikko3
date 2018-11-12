@@ -1,5 +1,7 @@
 package ohtu;
 
+import ohtu.api.Submission;
+
 import java.util.Collection;
 
 public class SubmissionStatsCalculator {

@@ -1,4 +1,4 @@
-package ohtu;
+package ohtu.api;
 
 import java.util.List;
 

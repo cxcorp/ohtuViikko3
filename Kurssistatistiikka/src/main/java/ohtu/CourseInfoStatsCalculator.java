@@ -1,6 +1,8 @@
 package ohtu;
 
-public class CourseStatsCalculator {
+import ohtu.api.CourseInfo;
+
+public class CourseInfoStatsCalculator {
     public int countAllExercises(CourseInfo course) {
         // assumption: no exercise is null
         return course.getExercises()

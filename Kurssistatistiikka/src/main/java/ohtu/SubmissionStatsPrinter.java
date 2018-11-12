@@ -1,6 +1,9 @@
 package ohtu;
 
 import com.google.common.base.Joiner;
+import ohtu.api.CourseInfo;
+import ohtu.api.CourseStats;
+import ohtu.api.Submission;
 
 import java.io.PrintStream;
 import java.text.DecimalFormat;
@@ -11,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class SubmissionStatsPrinter {
     private final NumberFormat hoursFormat;
-    private final CourseStatsCalculator courseStats;
+    private final CourseInfoStatsCalculator courseStats;
     private final SubmissionStatsCalculator subStats;
     private final PrintStream stream;
 
@@ -22,12 +25,17 @@ public class SubmissionStatsPrinter {
         // hours can be decimals; format so that the decimal point is only
         // showed if needed
         this.hoursFormat = new DecimalFormat("##.#");
-        this.courseStats = new CourseStatsCalculator();
+        this.courseStats = new CourseInfoStatsCalculator();
         this.subStats = new SubmissionStatsCalculator();
         this.stream = stream;
     }
 
-    public void print(String studentId, List<Submission> subs, List<CourseInfo> courses) {
+    public void print(
+        String studentId,
+        List<Submission> subs,
+        List<CourseInfo> courses,
+        Map<String, CourseStats> courseWeekStats
+    ) {
         prepareData(subs, courses);
 
         stream.printf("opiskelijanumero %s\n", studentId);
@@ -47,6 +55,8 @@ public class SubmissionStatsPrinter {
                 courseStats.countAllExercises(course),
                 hoursFormat.format(subStats.countUsedHours(courseSubs))
             );
+            stream.println();
+            stream.println(courseWeekStats.get(course.getName()));
             stream.println();
         }
     }
