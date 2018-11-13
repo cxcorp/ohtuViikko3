@@ -6,6 +6,8 @@ import cucumber.api.java.en.When;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.*;
+
+import ohtu.domain.User;
 import ohtu.io.*;
 import ohtu.data_access.*;
 import ohtu.services.*;
@@ -35,5 +37,15 @@ public class Stepdefs {
     @Then("^system will respond with \"([^\"]*)\"$")
     public void system_will_respond_with(String expectedOutput) throws Throwable {
         assertTrue(io.getPrints().contains(expectedOutput));
+    }
+
+    @Given("^command new user is selected$")
+    public void command_new_user_is_selected() throws Throwable {
+        inputLines.add("new");
+    }
+
+    @Given("^user \"([^\"]*)\" with password \"([^\"]*)\" is created$")
+    public void userWithPasswordIsCreated(String username, String password) throws Throwable {
+        userDao.add(new User(username, password));
     }
 }
