@@ -4,7 +4,10 @@ import ohtu.domain.User;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import ohtu.data_access.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AuthenticationService {
 
     private static final int USERNAME_MIN_LENGTH = 3;
@@ -12,6 +15,7 @@ public class AuthenticationService {
 
     private UserDao userDao;
 
+    @Autowired
     public AuthenticationService(UserDao userDao) {
         this.userDao = userDao;
     }
