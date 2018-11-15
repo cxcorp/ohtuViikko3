@@ -60,7 +60,7 @@ public class Main {
                 model.put("template", "templates/login.html");
                 return new ModelAndView(model, LAYOUT);
             }
-                
+
            response.redirect("/ohtu");
            return new ModelAndView(model, LAYOUT);
         }, new VelocityTemplateEngine());
