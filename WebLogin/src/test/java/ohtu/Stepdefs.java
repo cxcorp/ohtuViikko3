@@ -23,8 +23,7 @@ public class Stepdefs {
     @Given("^login is selected$")
     public void login_selected() throws Throwable {
         driver.get(baseUrl);
-        WebElement element = driver.findElement(By.linkText("login"));
-        element.click();
+        clickLinkWithText("login");
     }
 
     @Given("^register is selected$")
@@ -77,12 +76,52 @@ public class Stepdefs {
         logInWith(username, password);
     }
 
-    @When("^a valid username and password is given$")
-    public void aValidUsernameAndPasswordIsGiven() throws Throwable {
+    @When("^a valid username \"([^\"]*)\" and password \"([^\"]*)\" and matching password confirmation are entered$")
+    public void aValidUsernameAndPasswordAndMatchingPasswordConfirmationAreEntered(
+        String username,
+        String password
+    ) throws Throwable {
         registerWith(
-            "arto" + random.nextInt(10000),
-            "salakala123",
-            "salakala123"
+            username,
+            password,
+            password
+        );
+    }
+
+    @When("^too short of a password \"([^\"]*)\" and valid password \"([^\"]*)\" are entered$")
+    public void tooShortOfAPasswordAndValidPasswordAreEntered(
+        String username,
+        String password
+    ) throws Throwable {
+        registerWith(
+            username,
+            password,
+            password
+        );
+    }
+
+    @When("^a valid username \"([^\"]*)\" and too short of a password \"([^\"]*)\" are entered$")
+    public void aValidUsernameAndTooShortOfAPasswordAreEntered(
+        String username,
+        String password
+    ) throws Throwable {
+        registerWith(
+            username,
+            password,
+            password
+        );
+    }
+
+    @When("^a valid username \"([^\"]*)\" and valid password \"([^\"]*)\" but incorrect confirmation \"([^\"]*)\" is entered$")
+    public void aValidUsernameAndValidPasswordButIncorrectConfirmationIsEntered(
+        String username,
+        String password,
+        String passwordConfirmation
+    ) throws Throwable {
+        registerWith(
+            username,
+            password,
+            passwordConfirmation
         );
     }
 
@@ -97,7 +136,7 @@ public class Stepdefs {
         pageHasContent("Give your credentials to login");
     }
 
-    @Then("^user is shown the welcome page$")
+    @Then("^a new user is created")
     public void userIsShownTheWelcomePage() throws Throwable {
         pageHasContent("Welcome to Ohtu Application!");
     }
@@ -107,6 +146,11 @@ public class Stepdefs {
         pageHasContent("Ohtu App");
         pageHasContent("login");
         pageHasContent("register new user");
+    }
+
+    @Then("^user is not created and error \"([^\"]*)\" is reported$")
+    public void userIsNotCreatedAndErrorIsReported(String error) throws Throwable {
+        pageHasContent(error);
     }
 
     @After
@@ -121,8 +165,7 @@ public class Stepdefs {
     }
 
     private void goToRegistration() {
-        WebElement element = driver.findElement(By.linkText("register new user"));
-        element.click();
+        clickLinkWithText("register new user");
     }
 
     private void skipWelcomeScreen() {
@@ -150,5 +193,18 @@ public class Stepdefs {
         element.sendKeys(passwordConfirmation);
         element = driver.findElement(By.name("signup"));
         element.submit();
+    }
+
+    private void clickLinkWithText(String text) {
+        int trials = 0;
+        while (trials++ < 5) {
+            try {
+                WebElement element = driver.findElement(By.linkText(text));
+                element.click();
+                break;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
