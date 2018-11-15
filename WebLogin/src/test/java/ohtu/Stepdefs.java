@@ -40,6 +40,20 @@ public class Stepdefs {
         skipWelcomeScreen();
     }
 
+    @Given("^user with username \"([^\"]*)\" with password \"([^\"]*)\" is successfully created$")
+    public void userWithUsernameWithPasswordIsSuccessfullyCreated(String username, String password) throws Throwable {
+        registerIsSelected();
+        registerWith(username, password, password);
+        userIsShownTheWelcomePage();
+    }
+
+    @Given("^user with username \"([^\"]*)\" and password \"([^\"]*)\" is tried to be created$")
+    public void userWithUsernameAndPasswordIsTriedToBeCreated(String username, String password) throws Throwable {
+        registerIsSelected();
+        registerWith(username, password, password);
+        userIsOnRegistrationPage();
+    }
+
     @When("^username \"([^\"]*)\" and password \"([^\"]*)\" are given$")
     public void username_and_password_are_given(String username, String password) throws Throwable {
         WebElement element = driver.findElement(By.name("username"));
@@ -112,6 +126,11 @@ public class Stepdefs {
         );
     }
 
+    @When("^previously registered username \"([^\"]*)\" and password \"([^\"]*)\" are given$")
+    public void previouslyRegisteredUsernameAndPasswordAreGiven(String username, String pass) throws Throwable {
+        logInWith(username, pass);
+    }
+
     @When("^a valid username \"([^\"]*)\" and valid password \"([^\"]*)\" but incorrect confirmation \"([^\"]*)\" is entered$")
     public void aValidUsernameAndValidPasswordButIncorrectConfirmationIsEntered(
         String username,
@@ -123,6 +142,11 @@ public class Stepdefs {
             password,
             passwordConfirmation
         );
+    }
+
+    @When("^previously attempted username \"([^\"]*)\" and password \"([^\"]*)\" are given$")
+    public void previouslyAttemptedUsernameAndPasswordAreGiven(String user, String pass) throws Throwable {
+        logInWith(user, pass);
     }
 
     @Then("^user is logged in$")
@@ -166,6 +190,10 @@ public class Stepdefs {
 
     private void goToRegistration() {
         clickLinkWithText("register new user");
+    }
+
+    private void userIsOnRegistrationPage() {
+        pageHasContent("Create username and give password");
     }
 
     private void skipWelcomeScreen() {
